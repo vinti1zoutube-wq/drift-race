@@ -45,12 +45,23 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 #ov h1{margin:0;font-size:clamp(36px,10vw,64px);font-style:italic;color:var(--or);text-shadow:0 4px 0 #6b2b00}
 #ov p{margin:0;line-height:1.5;color:#d6dbf2}#ov .bt{display:flex;gap:10px;margin-top:8px}
 #ov button{border:0;border-radius:12px;padding:13px 26px;font-weight:900;font-size:18px;background:var(--yl);color:#2b2200}#ov button+button{background:#2a2f4a;color:#fff}
+#lo{pointer-events:auto;border:0;border-radius:14px;padding:5px 14px;font-weight:800;font-size:13px;background:rgba(0,0,0,.45);color:#fff}
+#au{position:fixed;inset:0;z-index:9;background:linear-gradient(#1a1d2b,#0e1020);display:none;align-items:center;justify-content:center;padding:24px;touch-action:auto}
+#au .bx{width:100%;max-width:360px;display:flex;flex-direction:column;gap:10px;text-align:center}
+#au h1{margin:0 0 6px;font-size:clamp(36px,11vw,56px);font-style:italic;color:var(--or);text-shadow:0 4px 0 #6b2b00}
+#at{display:flex;gap:8px}#at button{flex:1;border:0;border-radius:10px;padding:10px;font-weight:800;font-size:15px;background:#2a2f4a}#at button.on{background:var(--or)}
+#au input{border:0;border-radius:10px;padding:14px;font-size:16px;background:#2a2f4a;color:#fff;user-select:text;-webkit-user-select:text;width:100%}
+#ab{border:0;border-radius:14px;padding:15px;font-weight:900;font-size:19px;background:var(--yl);color:#2b2200;box-shadow:0 5px 0 #8a6d00}
+#am{min-height:20px;font-size:14px;color:#ff9a9a;margin:0}#an2{font-size:12px;color:#8e96bd;margin:0;line-height:1.4}
+.pl{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#2a2f4a;border-radius:10px;padding:8px 12px}.pl.me{outline:2px solid var(--yl)}.pl small{display:block;color:#c9d0ee;font-size:12px;font-weight:600}.pl b{word-break:break-all}.pb{width:auto!important;padding:0 16px;font-size:14px}
+#pa,#pcs{flex:1;min-width:0;border:0;border-radius:10px;padding:12px;font-size:16px;background:#2a2f4a;color:#fff;user-select:text;-webkit-user-select:text}
 </style></head><body>
 <div id="hud"><div id="lap"></div><div id="tm"></div><div id="bt"></div><div id="spd"><span id="sp">0</span> <small>km/h</small></div><div id="dbar"><div id="dfill"></div></div></div>
 <button id="exit">✕ Lobby</button><div id="ban"></div><div class="k" id="bl">◀</div><div class="k" id="br">▶</div><div class="k" id="bd">DRIFT</div>
-<div id="lob"><div id="top"><b>DRIFT RACE</b><div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px"><span id="mon"></span><button id="rsb">Reset</button></div></div>
-<div id="pan"><div id="tabs"><button data-t="c">Cars</button><button data-t="m">Maps</button><button data-t="k">Code</button></div><div id="pc"></div><button id="race">RACE</button></div></div>
+<div id="lob"><div id="top"><b>DRIFT RACE</b><div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px"><span id="mon"></span><div style="display:flex;gap:6px"><button id="lo">Log out</button><button id="rsb">Reset</button></div></div></div>
+<div id="pan"><div id="tabs"><button data-t="c">Cars</button><button data-t="m">Maps</button><button data-t="k">Code</button><button data-t="p" id="tp" style="display:none">Players</button></div><div id="pc"></div><button id="race">RACE</button></div></div>
 <div id="rm"><div class="bx"><h2>Reset everything?</h2><p>All your coins, cars, best laps and unlocked codes will be deleted and the game starts from zero. This cannot be undone.</p><div class="bt"><button id="ry">Yes, reset</button><button id="rn">Cancel</button></div></div></div>
+<div id="au"><div class="bx"><h1>DRIFT RACE</h1><div id="at"><button data-m="in">Log in</button><button data-m="up">Register</button></div><input id="an" placeholder="Username" maxlength="16" autocomplete="username" autocapitalize="off" spellcheck="false"><input id="ap" type="password" placeholder="Password" autocomplete="current-password"><p id="am"></p><button id="ab"></button><p id="an2">Your account is saved on this device and the game logs you in automatically next time.</p></div></div>
 <div id="ov"><h1>FINISHED</h1><p id="msg"></p><p id="rw" style="color:var(--yl);font-weight:800"></p><div class="bt"><button id="again">Race again</button><button id="tolob">Lobby</button></div></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
@@ -72,9 +83,11 @@ const MAPS=[
 {n:'Green Valley',rw:200,sky:0x7ec8ff,gr:0x4f9d4a,rd:[0x3b3f4a,0x434856],kb:[0xe03a3a,0xf4f4f4],pr:'tree',grip:5.5,li:1,cps:[[0,-120],[80,-130],[150,-70],[140,10],[70,50],[90,120],[20,170],[-70,140],[-90,70],[-150,20],[-140,-70],[-70,-110]]},
 {n:'Desert Run',rw:300,sky:0xf3c98b,gr:0xd9b36a,rd:[0x4a4038,0x544a40],kb:[0xff8a1a,0xfff3d0],pr:'cactus',grip:5,li:1.1,cps:[[-140,-100],[0,-120],[140,-100],[170,-30],[110,10],[160,70],[100,130],[0,100],[-60,150],[-150,110],[-170,30],[-110,-30]]},
 {n:'Neon Night',rw:420,sky:0x0a0a22,gr:0x14102e,rd:[0x23233a,0x2b2b46],kb:[0x00e5ff,0xff2bd6],pr:'neon',grip:5.5,li:.6,cps:[[0,-140],[90,-110],[60,-40],[140,-10],[130,70],[50,60],[40,140],[-50,110],[-30,30],[-120,50],[-150,-30],[-80,-80]]},
-{n:'Snow Peak',rw:600,sky:0xcfe6ff,gr:0xeef4fb,rd:[0x5a6270,0x646c7a],kb:[0x2b7bff,0xffffff],pr:'snow',grip:3.6,li:1.15,cps:[[0,-150],[100,-140],[160,-60],[120,0],[160,60],[90,120],[0,80],[-60,130],[-140,100],[-160,20],[-100,-30],[-140,-100]]}];
-let sv={money:300,owned:[0],car:0,map:0,best:{}};try{const o=JSON.parse(ls.g('dr_save2')||'null');if(o&&o.owned)sv=Object.assign(sv,o)}catch(e){}
-const save=()=>ls.s('dr_save2',JSON.stringify(sv));
+{n:'Snow Peak',rw:600,sky:0xcfe6ff,gr:0xeef4fb,rd:[0x5a6270,0x646c7a],kb:[0x2b7bff,0xffffff],pr:'snow',grip:3.6,li:1.15,cps:[[0,-150],[100,-140],[160,-60],[120,0],[160,60],[90,120],[0,80],[-60,130],[-140,100],[-160,20],[-100,-30],[-140,-100]]},
+{n:'Drag Strip',code:'DRAG',run:1,rw:500,sky:0xffc48a,gr:0xd8b878,rd:[0x2e3038,0x363942],kb:[0xffffff,0xff3030],pr:'cactus',grip:6,li:1.1,cps:[]},
+{n:'Hairpin Hell',code:'HAIRPIN',rw:900,sky:0x2a1330,gr:0x2c1a2e,rd:[0x34283c,0x3d3047],kb:[0xff3030,0xffffff],pr:'neon',grip:5,li:.7,cps:Array.from({length:72},(_,j)=>{const a=j*Math.PI*2/72,r=110+8*Math.sin(12*a);return[r*Math.cos(a),r*Math.sin(a)]})}];
+let sv={money:300,owned:[0],car:0,map:0,best:{}},UK=null,UN='';
+const save=()=>{if(UK)ls.s('dr_save2_'+UK,JSON.stringify(sv))};
 // scene
 const R=new THREE.WebGLRenderer({antialias:true});R.setPixelRatio(Math.min(devicePixelRatio||1,2));document.body.prepend(R.domElement);
 const scene=new THREE.Scene();scene.background=new THREE.Color(0x7ec8ff);scene.fog=new THREE.Fog(0x7ec8ff,60,260);
@@ -89,17 +102,17 @@ function prop(t){const g=new THREE.Group(),M=c=>new THREE.MeshLambertMaterial({c
 function minD(x,z){let b=1e9;for(const p of pts){const d=(p.x-x)**2+(p.z-z)**2;if(d<b)b=d}return Math.sqrt(b)}
 function buildMap(){const m=MAPS[sv.map];if(world){scene.remove(world);world.traverse(o=>{if(o.geometry)o.geometry.dispose()})}
  world=new THREE.Group();scene.add(world);scene.background.setHex(m.sky);scene.fog.color.setHex(m.sky);hemi.intensity=m.li;sun.intensity=.8*m.li;
- pts=new THREE.CatmullRomCurve3(m.cps.map(p=>new THREE.Vector3(p[0],0,p[1])),true,'centripetal').getSpacedPoints(N).slice(0,N);
- tan=pts.map((p,i)=>{const a=pts[(i+1)%N],b=pts[(i+N-1)%N];return new THREE.Vector3(a.x-b.x,0,a.z-b.z).normalize()});
- let len=0;for(let i=0;i<N;i++)len+=pts[i].distanceTo(pts[(i+1)%N]);PAR=3*len/33;
+ pts=m.run?Array.from({length:N},(_,i)=>new THREE.Vector3(0,0,-380+760*i/(N-1))):new THREE.CatmullRomCurve3(m.cps.map(p=>new THREE.Vector3(p[0],0,p[1])),true,'centripetal').getSpacedPoints(N).slice(0,N);
+ tan=m.run?pts.map(()=>new THREE.Vector3(0,0,1)):pts.map((p,i)=>{const a=pts[(i+1)%N],b=pts[(i+N-1)%N];return new THREE.Vector3(a.x-b.x,0,a.z-b.z).normalize()});
+ let len=0;for(let i=0;i<N;i++)len+=pts[i].distanceTo(pts[(i+1)%N]);PAR=m.run?len/2/33:3*len/33;
  const gnd=new THREE.Mesh(new THREE.PlaneGeometry(1000,1000),new THREE.MeshLambertMaterial({color:m.gr}));gnd.rotation.x=-Math.PI/2;world.add(gnd);
  const pos=[],col=[],idx=[],c=new THREE.Color();let n=0;
  const strip=(i,o0,o1,y,hex)=>{const j=(i+1)%N,a=pts[i],b=pts[j],ta=tan[i],tb=tan[j];c.setHex(hex);for(const[p,t,o]of[[a,ta,o0],[a,ta,o1],[b,tb,o1],[b,tb,o0]]){pos.push(p.x+t.z*o,y,p.z-t.x*o);col.push(c.r,c.g,c.b)}idx.push(n,n+1,n+2,n,n+2,n+3);n+=4};
- for(let i=0;i<N;i++){strip(i,-TW/2,TW/2,.03,m.rd[(i>>2)%2]);const k=m.kb[(i>>1)%2];strip(i,TW/2,TW/2+1.3,.04,k);strip(i,-TW/2-1.3,-TW/2,.04,k)}
+ for(let i=0;i<(m.run?N-1:N);i++){strip(i,-TW/2,TW/2,.03,m.rd[(i>>2)%2]);const k=m.kb[(i>>1)%2];strip(i,TW/2,TW/2+1.3,.04,k);strip(i,-TW/2-1.3,-TW/2,.04,k)}
  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setAttribute('color',new THREE.Float32BufferAttribute(col,3));g.setIndex(idx);
  world.add(new THREE.Mesh(g,new THREE.MeshBasicMaterial({vertexColors:true,side:THREE.DoubleSide})));
  const cv=document.createElement('canvas');cv.width=16;cv.height=2;const x=cv.getContext('2d');for(let i=0;i<16;i++)for(let j=0;j<2;j++){x.fillStyle=(i+j)%2?'#fff':'#111';x.fillRect(i,j,1,1)}
- const tx=new THREE.CanvasTexture(cv);tx.magFilter=THREE.NearestFilter;const sg=new THREE.PlaneGeometry(TW+2.6,2.4);sg.rotateX(-Math.PI/2);const sl=new THREE.Mesh(sg,new THREE.MeshBasicMaterial({map:tx}));sl.position.set(pts[0].x,.06,pts[0].z);sl.rotation.y=Math.atan2(tan[0].x,tan[0].z);world.add(sl);
+ const tx=new THREE.CanvasTexture(cv);tx.magFilter=THREE.NearestFilter;const sg=new THREE.PlaneGeometry(TW+2.6,2.4);sg.rotateX(-Math.PI/2);const sl=new THREE.Mesh(sg,new THREE.MeshBasicMaterial({map:tx}));sl.position.set(pts[0].x,.06,pts[0].z);sl.rotation.y=Math.atan2(tan[0].x,tan[0].z);world.add(sl);if(m.run){const s2=sl.clone();s2.position.set(pts[N-1].x,.06,pts[N-1].z);world.add(s2)}
  for(let i=0,k=0;i<500&&k<90;i++){const px=(Math.random()-.5)*480,pz=(Math.random()-.5)*480;if(minD(px,pz)<TW/2+8)continue;k++;const o=prop(m.pr),s=.8+Math.random()*.7;o.scale.setScalar(s);o.position.set(px,0,pz);world.add(o)}}
 function makeCar(d){const g=new THREE.Group(),b=new THREE.Group();g.add(b);g.userData.body=b;
  const L=m=>new THREE.MeshLambertMaterial({color:m}),B=m=>new THREE.MeshBasicMaterial({color:m}),add=(w,h,l,x,y,z,m,p=b)=>{const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,l),m);o.position.set(x,y,z);p.add(o)},top=.35+d.h;
@@ -132,24 +145,25 @@ function update(dt){
  c.th-=c.steer*(dr?3:2.1)*D.tn*clamp(vF/9,-1,1)*dt;
  c.x=clamp(c.x+c.vx*dt,-420,420);c.z=clamp(c.z+c.vz*dt,-420,420);
  smT-=dt;if((dr&&Math.abs(vL)>2||off&&sp>10)&&smT<=0){smT=.05;for(const s of[-.8,.8]){const m=new THREE.Mesh(new THREE.BoxGeometry(.7,.7,.7),new THREE.MeshBasicMaterial({color:off?0x8a7a5a:0xeeeeee,transparent:true,opacity:.6}));m.position.set(c.x-fx*1.5+rx*s,.4,c.z-fz*1.5+rz*s);scene.add(m);sm.push({m,l:.7})}}
- if(racing){lapT+=dt;tot+=dt;const i=ci;if(i>N*.4&&i<N*.6)cp=true;
-  if(pI>N*.85&&i<N*.15&&cp){cp=false;lap++;beep(880,.2);const b=sv.best[sv.map];if(!temp&&sv.car!=6&&(!b||lapT<b)){sv.best[sv.map]=lapT;save()}lapT=0;if(temp){temp=0;setCar(sv.car);say('Rocket used up!');setTimeout(()=>{if(st=='race')say('')},1200)}if(lap>=3)finish()}pI=i}
+ if(racing){lapT+=dt;tot+=dt;const i=ci;if(M.run){if(i>=N-3){const b=sv.best[sv.map];if(!temp&&sv.car!=6&&(!b||lapT<b)){sv.best[sv.map]=lapT;save()}lap=1;finish()}}else{if(i>N*.4&&i<N*.6)cp=true;
+  if(pI>N*.85&&i<N*.15&&cp){cp=false;lap++;beep(880,.2);const b=sv.best[sv.map];if(!temp&&sv.car!=6&&(!b||lapT<b)){sv.best[sv.map]=lapT;save()}lapT=0;if(temp){temp=0;setCar(sv.car);say('Rocket used up!');setTimeout(()=>{if(st=='race')say('')},1200)}if(lap>=3)finish()}pI=i}}
  const spd=Math.hypot(c.vx,c.vz);$('sp').textContent=Math.round(spd*3.6);$('dfill').style.width=c.dT/2.2*100+'%';$('dfill').style.background=c.dT>1.4?'#ff7a1a':'#ffd23f';
- $('lap').textContent='Lap '+Math.min(lap+1,3)+' / 3';$('tm').textContent=fmt(lapT);$('bt').textContent=sv.best[sv.map]?'Best lap '+fmt(sv.best[sv.map]):''}
+ $('lap').textContent=M.run?'Straight run':'Lap '+Math.min(lap+1,3)+' / 3';$('tm').textContent=fmt(lapT);$('bt').textContent=sv.best[sv.map]?'Best lap '+fmt(sv.best[sv.map]):''}
 function finish(){st='done';say('');const r=Math.round(MAPS[sv.map].rw+Math.max(0,PAR-tot)*6);sv.money+=r;save();beep(660,.5);
  $('msg').textContent=MAPS[sv.map].n+', total time '+fmt(tot)+'.';$('rw').textContent='Reward +'+r+' 🪙';$('ov').style.display='flex';$('exit').style.display='none';tbtn('none')}
 function begin(){temp=0;if(sv.tok){temp=1;sv.tok=0;save()}setCar(temp?6:sv.car);reset();st='count';cd=3.99;$('lob').style.display='none';$('ov').style.display='none';$('hud').style.display='block';$('exit').style.display='block';if(touch)tbtn('flex')}
 function lobby(){temp=0;st='lobby';view=sv.car;reset();setCar(view);$('lob').style.display='flex';$('ov').style.display='none';$('hud').style.display='none';$('exit').style.display='none';tbtn('none');say('');draw()}
-function draw(){$('mon').textContent='🪙 '+(sv.unl?'∞':sv.money);document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t==tab));
+function draw(){if(tab=='p'&&!sv.adm)tab='c';$('tp').style.display=sv.adm?'':'none';$('mon').textContent='👤 '+UN+'  🪙 '+(sv.unl?'∞':sv.money);document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t==tab));
  const P=$('pc');
  if(tab=='c'){const d=CARS[view],own=sv.owned.includes(view),bar=(l,v)=>'<span>'+l+'</span><div class="bar"><i style="width:'+clamp(v,6,100)+'%"></i></div>';
   P.innerHTML='<div class="row"><button class="ar" id="pv">◀</button><div class="nm">'+d.n+'</div><button class="ar" id="nx">▶</button></div><div class="st">'+bar('Speed',(d.acc-18)/18*100)+bar('Handling',(d.tn-.95)/.3*100)+bar('Boost',d.bo/18*100)+'</div><button id="act" class="'+(own||sv.unl||sv.money>=d.p?'':'no')+'">'+(own?(sv.car==view?'Selected':'Select'):'Buy for '+d.p+' 🪙')+'</button>';
   const step=s=>{do{view=(view+s+CARS.length)%CARS.length}while(CARS[view].sec&&!sv.sec);setCar(view);draw()};$('pv').onclick=()=>step(-1);$('nx').onclick=()=>step(1);
   $('act').onclick=()=>{if(own){sv.car=view}else if(sv.unl||sv.money>=d.p){if(!sv.unl)sv.money-=d.p;sv.owned.push(view);sv.car=view;beep(700,.2)}else return;save();draw()}}
  else if(tab=='k'){P.innerHTML='<div class="row"><input id="ci" placeholder="Enter code" autocomplete="off" autocapitalize="characters" spellcheck="false"><button class="ar" id="ca" style="width:auto;padding:0 18px">OK</button></div><p id="cm" style="margin:0;min-height:20px;font-size:14px;color:#ffd23f">'+(sv.tok?'Rocket is ready for your next race (one lap).':sv.unl?'Unlimited coins are on.':'')+'</p><p style="margin:0;font-size:13px;color:#c9d0ee">'+(sv.oneUsed?'Code ONELAP: already used.':'Free code: <b>ONELAP</b>. Works once, gives you Rocket for one lap.')+'</p>';
-  const go=()=>{const v=$('ci').value.trim().toUpperCase();if(v=='MONEY'){sv.unl=1;save();draw();$('cm').textContent='Code accepted! You now have unlimited coins.'}else if(v=='ONELAP'){if(sv.oneUsed){$('cm').textContent='This code was already used.'}else{sv.oneUsed=1;sv.tok=1;save();draw();$('cm').textContent='Code accepted! Your next race starts with Rocket for one lap.'}}else if(v=='ROCKET'){sv.sec=1;if(!sv.owned.includes(6))sv.owned.push(6);sv.car=6;view=6;setCar(6);save();draw();$('cm').textContent='Code accepted! Secret car Rocket unlocked and selected (500 km/h).'}else $('cm').textContent='Wrong code.'};
+  const go=()=>{const v=$('ci').value.trim().toUpperCase();if(v=='ADMIN'){sv.adm=1;tab='p';psel=null;pmsg='';save();draw();return}if(v=='MONEY'){sv.unl=1;save();draw();$('cm').textContent='Code accepted! You now have unlimited coins.'}else if(v=='ONELAP'){if(sv.oneUsed){$('cm').textContent='This code was already used.'}else{sv.oneUsed=1;sv.tok=1;save();draw();$('cm').textContent='Code accepted! Your next race starts with Rocket for one lap.'}}else if(v=='ROCKET'){sv.sec=1;if(!sv.owned.includes(6))sv.owned.push(6);sv.car=6;view=6;setCar(6);save();draw();$('cm').textContent='Code accepted! Secret car Rocket unlocked and selected (500 km/h).'}else if(MAPS.some(m=>m.code==v)){const mi=MAPS.findIndex(m=>m.code==v);sv.mu=sv.mu||{};sv.mu[v]=1;sv.map=mi;save();buildMap();reset();draw();$('cm').textContent='Code accepted! Secret map '+MAPS[mi].n+' unlocked and selected.'}else $('cm').textContent='Wrong code.'};
   $('ca').onclick=go;$('ci').onkeydown=e=>{if(e.key=='Enter')go()}}
- else{P.innerHTML='<div class="mp">'+MAPS.map((m,i)=>'<button class="mc'+(i==sv.map?' on':'')+'" data-i="'+i+'"><b>'+m.n+'</b>Reward from '+m.rw+' 🪙<br>Best lap '+(sv.best[i]?fmt(sv.best[i]):'none')+'</button>').join('')+'</div>';
+ else if(tab=='p'){playersUI(P)}
+ else{P.innerHTML='<div class="mp">'+MAPS.map((m,i)=>m.code&&!(sv.mu&&sv.mu[m.code])?'':'<button class="mc'+(i==sv.map?' on':'')+'" data-i="'+i+'"><b>'+m.n+'</b>Reward from '+m.rw+' 🪙<br>Best lap '+(sv.best[i]?fmt(sv.best[i]):'none')+'</button>').join('')+'</div>';
   P.querySelectorAll('.mc').forEach(b=>b.onclick=()=>{sv.map=+b.dataset.i;save();buildMap();reset();draw()})}}
 document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>{tab=b.dataset.t;draw()});
 $('race').onclick=()=>{view=sv.car;begin()};$('again').onclick=begin;$('tolob').onclick=lobby;$('exit').onclick=lobby;
@@ -159,7 +173,41 @@ function hold(id,k){const e=$(id),on=v=>{tch[k]=v;e.classList.toggle('on',!!v)};
 hold('bl','l');hold('br','r');hold('bd','d');
 addEventListener('keydown',e=>{keys[e.key.toLowerCase()]=1;if(e.key===' ')e.preventDefault()});addEventListener('keyup',e=>keys[e.key.toLowerCase()]=0);
 function rs(){const w=innerWidth,h=innerHeight;R.setSize(w,h);cam.aspect=w/h;cam.updateProjectionMatrix()}addEventListener('resize',rs);rs();
-buildMap();lobby();let last=performance.now();
+// accounts (stored on this device)
+const users=()=>{try{return JSON.parse(ls.g('dr_users')||'{}')||{}}catch(e){return{}}};
+async function hp(s,p){try{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s+':'+p));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('')}catch(e){let h=5381;const t=s+':'+p;for(let i=0;i<t.length;i++)h=(h*33^t.charCodeAt(i))>>>0;return 'x'+h}}
+let amode='in';const amsg=t=>$('am').textContent=t;
+function authUI(){amsg('');document.querySelectorAll('#at button').forEach(b=>b.classList.toggle('on',b.dataset.m==amode));$('ab').textContent=amode=='in'?'LOG IN':'CREATE ACCOUNT';$('ap').autocomplete=amode=='in'?'current-password':'new-password'}
+function showAuth(){$('an').value='';$('ap').value='';amode=Object.keys(users()).length?'in':'up';authUI();$('au').style.display='flex'}
+function enter(k,name){UK=k;UN=name;psel=null;pmsg='';ls.s('dr_session',k);let o=null;try{o=JSON.parse(ls.g('dr_save2_'+k)||'null')}catch(e){}
+ sv={money:300,owned:[0],car:0,map:0,best:{}};if(o&&o.owned)sv=Object.assign(sv,o);$('au').style.display='none';tab='c';buildMap();lobby()}
+async function submit(){const n=$('an').value.trim(),p=$('ap').value,k=n.toLowerCase(),U=users();
+ if(n.length<3||n.length>16){amsg('Username must be 3-16 characters.');return}
+ if(amode=='up'){if(U[k]){amsg('This username is already taken on this device.');return}if(p.length<4){amsg('Password must be at least 4 characters.');return}
+  const first=!Object.keys(U).length,salt=Math.random().toString(36).slice(2);U[k]={name:n,salt,hash:await hp(salt,p)};ls.s('dr_users',JSON.stringify(U));
+  if(first){const old=ls.g('dr_save2');if(old&&!ls.g('dr_save2_'+k))ls.s('dr_save2_'+k,old)}
+  enter(k,n)}
+ else{const u=U[k];if(!u||u.hash!==await hp(u.salt,p)){amsg('Wrong username or password.');return}enter(k,u.name)}}
+document.querySelectorAll('#at button').forEach(b=>b.onclick=()=>{amode=b.dataset.m;authUI()});
+$('ab').onclick=submit;$('ap').onkeydown=$('an').onkeydown=e=>{e.stopPropagation();if(e.key=='Enter')submit()};
+$('lo').onclick=()=>{ls.s('dr_session','');UK=null;UN='';sv={money:300,owned:[0],car:0,map:0,best:{}};tab='c';buildMap();lobby();showAuth()};
+function initAuth(){const k=ls.g('dr_session'),u=k&&users()[k];if(u)enter(k,u.name);else{buildMap();lobby();showAuth()}}
+// players (accounts on this device): list, send coins, gift cars
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let psel=null,pmsg='';
+function loadU(k){let o=null;try{o=JSON.parse(ls.g('dr_save2_'+k)||'null')}catch(e){}return Object.assign({money:300,owned:[0],car:0,map:0,best:{}},o&&o.owned?o:{})}
+function playersUI(P){const U=users();if(psel&&!U[psel])psel=null;
+ if(!psel){const ks=Object.keys(U);
+  P.innerHTML='<div style="max-height:34vh;overflow:auto;display:flex;flex-direction:column;gap:6px">'+ks.map(k=>{const d=k==UK?sv:loadU(k);return '<div class="pl'+(k==UK?' me':'')+'"><div><b>'+esc(U[k].name)+(k==UK?' (you)':'')+'</b><small>🪙 '+(d.unl?'∞':d.money)+' · '+d.owned.length+' cars: '+d.owned.map(i=>CARS[i].n).join(', ')+'</small></div>'+(k==UK?'':'<button class="ar pb" data-k="'+esc(k)+'">Send</button>')+'</div>'}).join('')+'</div><p style="margin:0;font-size:12px;color:#8e96bd">'+ks.length+' account'+(ks.length==1?'':'s')+' on this device.</p>';
+  P.querySelectorAll('.pb').forEach(b=>b.onclick=()=>{psel=b.dataset.k;pmsg='';draw()});return}
+ const t=U[psel];
+ P.innerHTML='<div class="row"><button class="ar" id="pbk">◀</button><div class="nm" style="font-size:18px">To: '+esc(t.name)+'</div></div><div class="row"><input id="pa" type="number" min="1" inputmode="numeric" placeholder="Amount of 🪙"><button class="ar" id="ps" style="width:auto;padding:0 16px;font-size:15px">Send 🪙</button></div><div class="row"><select id="pcs">'+sv.owned.map(i=>'<option value="'+i+'">'+CARS[i].n+'</option>').join('')+'</select><button class="ar" id="pg" style="width:auto;padding:0 16px;font-size:15px">Gift car</button></div><p style="margin:0;min-height:20px;font-size:14px;color:#ffd23f">'+esc(pmsg)+'</p><p style="margin:0;font-size:12px;color:#8e96bd">Admin: coins are free, nothing is taken from you. A gifted car is copied, you keep yours.</p>';
+ $('pbk').onclick=()=>{psel=null;pmsg='';draw()};
+ $('ps').onclick=()=>{const a=Math.min(1e9,Math.floor(+$('pa').value));if(!(a>0)){pmsg='Enter an amount above 0.';draw();return}
+  if(!sv.adm&&!sv.unl&&a>sv.money){pmsg='You do not have enough coins.';draw();return}
+  if(!sv.adm&&!sv.unl)sv.money-=a;save();const d=loadU(psel);d.money+=a;ls.s('dr_save2_'+psel,JSON.stringify(d));pmsg='Sent '+a+' 🪙 to '+t.name+'.';beep(700,.2);draw()};
+ $('pg').onclick=()=>{const i=+$('pcs').value,d=loadU(psel);if(d.owned.includes(i)){pmsg=t.name+' already has '+CARS[i].n+'.'}else{d.owned.push(i);if(i==6)d.sec=1;ls.s('dr_save2_'+psel,JSON.stringify(d));pmsg='Gave '+CARS[i].n+' to '+t.name+'.';beep(700,.2)}draw()}}
+initAuth();let last=performance.now();
 (function loop(t){requestAnimationFrame(loop);const dt=Math.min(.05,(t-last)/1000);last=t;
  if(st=='count'){const p=Math.ceil(cd);cd-=dt;const q=Math.ceil(cd);if(cd<=0){st='race';say('GO!');beep(880,.4);setTimeout(()=>{if(st=='race')say('')},800)}else{say(q);if(q!=p)beep(440,.15)}}
  if(st!='lobby')update(dt);
